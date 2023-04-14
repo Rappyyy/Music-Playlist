@@ -1,0 +1,81 @@
+@startuml
+class AddSongToPlaylistActivity {
+ handleRequest(AddSongToPlaylistRequest) : AddSongToPlaylistResult
+}
+class CreatePlaylistActivity {
+handleRequest(CreatePlaylistRequest) : CreatePlaylistResult
+}
+
+class GetPlaylistActivity{
+handleRequest(GetPlaylistRequest) : GetPlaylistResult
+}
+class GetPlaylistSongsActivity{
+handleRequest(GetPlaylistSongsRequest) : GetPlaylistSongsResult
+}
+class UpdatePlaylistActivity{
+handleRequest(UpdatePlaylistRequest) : UpdatePlaylistResult
+}
+class Playlist {
+-@DynamoDBHashKey id : String
+name : String
+customerId : String
+songCount : Integer
+tags : Set<String>
+songList : List<AlbumTrack>
+}
+class PlaylistDao {
+getPlaylist(String) : Playlist
+- dynamoDbMapper : DynamoDBMapper
+}
+class AlbumTrackDao {
+- dynamoDbMapper : DynamoDBMapper
+}
+class AlbumTrackNotFoundException {
+
+}
+class PlaylistNotFoundException {
+
+}
+
+class GetPlaylistActivity {
+
+}
+class GetPlaylistSongsActivity {
+
+}
+class UpdatePlaylistActivity {
+
+}
+class InvalidAttributeChangeException {
+{static} final long serialVersionUID
+}
+class InvalidAttributeValueException {
+ {static} final long serialVersionUID
+}
+class RuntimeException {
+
+}
+class UpdatePlaylistActivity {
+
+}
+
+class AlbumTrack {
+@DynamoDBHashKey asin : String
+@DynamoDBRangeKey trackNumber : Integer
+albumName : String
+songTitle : String
+}
+UpdatePlaylistActivity --> PlaylistDao
+GetPlaylistSongsActivity --> PlaylistDao
+GetPlaylistActivity --> PlaylistDao
+AddSongToPlaylistActivity --> PlaylistDao
+CreatePlaylistActivity --> PlaylistDao
+AddSongToPlaylistActivity --> AlbumTrackDao
+Playlist --> AlbumTrack
+RuntimeException --> PlaylistNotFoundException
+RuntimeException --> AlbumTrackNotFoundException
+PlaylistNotFoundException <|-- InvalidAttributeValueException
+PlaylistNotFoundException <|-- InvalidAttributeChangeException
+PlaylistDao <|-- RuntimeException
+
+@enduml
